@@ -42,7 +42,32 @@ header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rg
 @keyframes pulse{50%{opacity:.25;box-shadow:0 0 2px var(--red)}}
 .sound{font-family:var(--f-pixel);font-size:9px;letter-spacing:.08em;color:var(--muted);background:transparent;border:1px solid var(--line);padding:9px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
 .sound .led{width:8px;height:8px;background:var(--muted)}
+.sound[aria-pressed="false"]{color:var(--amber);border-color:var(--amber);animation:nudgeA 1.6s ease-in-out infinite}
+.sound[aria-pressed="false"] .led{background:var(--amber)}
+@keyframes nudgeA{50%{box-shadow:0 0 16px rgba(255,234,0,.45)}}
 .sound[aria-pressed="true"]{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px rgba(0,240,255,.25)}
+.nudge{animation:nudgeC 1.4s ease-in-out infinite}
+@keyframes nudgeC{50%{box-shadow:0 0 18px rgba(0,240,255,.6);background:rgba(0,240,255,.12)}}
+.press-hint{font-family:var(--f-pixel);font-size:9px;letter-spacing:.08em;color:var(--amber);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* Countdown */
+.countdown{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.cd{background:var(--void-2);border:1px solid var(--line);padding:10px 12px;min-width:64px;display:grid;gap:6px;justify-items:center}
+.cd b{font-family:var(--f-pixel);font-weight:400;font-size:clamp(16px,3.6vw,24px);color:var(--amber);font-variant-numeric:tabular-nums;text-shadow:0 0 10px rgba(255,234,0,.4)}
+.cd span{font-family:var(--f-type);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+/* Intro transmission */
+.intro{position:fixed;inset:0;z-index:90;background:var(--void);display:grid;place-items:center;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.intro-in{width:min(560px,100%);display:grid;gap:22px}
+.term{font-family:var(--f-type);font-size:17px;line-height:1.8;color:var(--green);min-height:9em;white-space:pre-wrap;text-shadow:0 0 8px rgba(57,255,136,.4)}
+.term::after{content:"█";animation:blink 1s steps(1) infinite}
+.intro-actions{display:grid;gap:12px;justify-items:start;opacity:0;transition:opacity .4s}
+.intro-actions.show{opacity:1}
+.accept{font-family:var(--f-pixel);font-size:clamp(11px,2.8vw,14px);letter-spacing:.06em;color:var(--void);background:var(--cyan);border:0;padding:18px 20px;cursor:pointer;box-shadow:0 0 24px rgba(0,240,255,.5);max-width:100%;text-align:left;line-height:1.6}
+.mute-link{background:none;border:0;color:var(--muted);font-family:var(--f-type);font-size:15px;text-decoration:underline;cursor:pointer;padding:4px 0}
+.intro-note{font-family:var(--f-type);color:var(--muted);margin:0;font-size:15px}
 .sound[aria-pressed="true"] .led{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
 
 button{font:inherit}
@@ -125,7 +150,7 @@ h1 .glitch::after{color:var(--amber);text-shadow:none;opacity:.35;animation:gl2 
 .timeline span{color:var(--muted);font-size:15px}
 
 /* Dossiers */
-.files{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.files{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:20px}
 .file{background:var(--paper);color:var(--paper-ink);font-family:var(--f-type);padding:22px 20px 20px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.5);display:grid;gap:10px;align-content:start}
 .file::before{content:"";position:absolute;top:-14px;left:18px;width:120px;height:14px;background:var(--paper);clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
 .file header{all:unset;display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:2px solid var(--paper-ink);padding-bottom:8px}
@@ -175,7 +200,7 @@ footer b{color:var(--red-2);font-weight:400}
 <header>
   <div class="bar">
     <div class="logo"><span class="dot" aria-hidden="true"></span><span>HAWKINS_LAB <b>//</b> FREQ_83.7</span></div>
-    <button class="sound" id="sound" aria-pressed="false"><span class="led" aria-hidden="true"></span><span class="txt">ЗВУК:</span> <span id="soundState">ВЫКЛ</span></button>
+    <button class="sound" id="sound" aria-pressed="false"><span class="led" aria-hidden="true"></span><span id="soundState">🔊 ВКЛЮЧИ ЗВУК</span></button>
   </div>
 </header>
 
@@ -185,6 +210,15 @@ footer b{color:var(--red-2);font-weight:400}
     <h1><span class="glitch" data-text="ПОСЛАНИЕ ДЛЯ ВИКИ И НАСТИ">ПОСЛАНИЕ ДЛЯ ВИКИ И НАСТИ</span></h1>
     <p>Лаборатория Хоукинса потеряла контроль над частотой. На волне <em>83.7</em> пойман сигнал, адресованный двум агентам. Расшифровка ниже. Если вы это читаете, вас уже ждут.</p>
     <div class="meta"><span>ДАТА: <b>31.10, суббота</b></span><span>ТОЧКА СБОРА: <b>ул. Харьковская</b></span></div>
+    <div style="display:grid;gap:10px;margin-top:6px">
+      <div class="label" id="cdLabel">До открытия врат</div>
+      <div class="countdown" id="countdown" aria-labelledby="cdLabel">
+        <div class="cd"><b id="cdD">--</b><span>дней</span></div>
+        <div class="cd"><b id="cdH">--</b><span>часов</span></div>
+        <div class="cd"><b id="cdM">--</b><span>минут</span></div>
+        <div class="cd"><b id="cdS">--</b><span>секунд</span></div>
+      </div>
+    </div>
   </section>
 
   <section class="danger" aria-labelledby="dz">
@@ -214,10 +248,11 @@ footer b{color:var(--red-2);font-weight:400}
       <div class="screen" id="screen" aria-hidden="true"></div>
       <div class="readout">
         <div class="freq" id="freq">083.7 <small>МГц</small></div>
-        <button class="btn" id="statusBtn">▶ СТАТУС</button>
+        <button class="btn nudge" id="statusBtn">▶ СТАТУС</button>
+        <span class="press-hint" id="pressHint">▲ ЖМИ СЮДА</span>
       </div>
     </div>
-    <p class="status" id="status" aria-live="polite">Ожидание запроса агента…</p>
+    <p class="status" id="status" aria-live="polite">Агент, подтверди, что ты в строю: нажми кнопку «СТАТУС».</p>
     <div id="stampSlot"></div>
   </section>
 
@@ -236,6 +271,16 @@ footer b{color:var(--red-2);font-weight:400}
     <div><div class="label">Архив · только для служебного пользования</div>
       <h2 id="filesTitle" style="font-family:var(--f-pixel);font-weight:400;font-size:clamp(13px,2.4vw,17px);margin:6px 0 0">Секретные досье</h2></div>
     <div class="files">
+      <article class="file">
+        <header><h3>КУРАТОР</h3><span class="no">ДЕЛО №000</span></header>
+        <dl>
+          <dt>Роль</dt><dd>Хакер лаборатории // Взломщица частоты 83.7</dd>
+          <dt>Специфика</dt><dd>Перехватила сигнал Изнанки и за один вечер собрала из него этот сайт.</dd>
+          <dt>Оружие</dt><dd>Ноутбук и неограниченный доступ к кнопке «НЕ НАЖИМАТЬ».</dd>
+          <dt>Миссия</dt><dd>Собрать отряд и проследить, чтобы <span class="redact" tabindex="0">никто не остался в Изнанке</span>.</dd>
+        </dl>
+        <span class="secret">ДОПУСК: ВСЕ</span>
+      </article>
       <article class="file">
         <header><h3>АГЕНТ НАСТЯ</h3><span class="no">ДЕЛО №01</span></header>
         <dl>
@@ -271,6 +316,17 @@ footer b{color:var(--red-2);font-weight:400}
 
   <footer>КОНЕЦ ПЕРЕДАЧИ<br><b>■</b> ДРУЗЬЯ НЕ ВРУТ <b>■</b></footer>
 </main>
+
+<div class="intro" id="intro" role="dialog" aria-modal="true" aria-label="Входящая передача">
+  <div class="intro-in">
+    <div class="term" id="term" aria-live="polite"></div>
+    <div class="intro-actions" id="introActions">
+      <button class="accept" id="accept">🔊 ПРИНЯТЬ СИГНАЛ СО ЗВУКОМ</button>
+      <p class="intro-note">Со звуком атмосфернее: тут музыка, гирлянда пищит, а кое-что рычит.</p>
+      <button class="mute-link" id="acceptMute">Принять без звука</button>
+    </div>
+  </div>
+</div>
 
 <div class="portal" id="portal" hidden role="dialog" aria-modal="true" aria-label="Портал открыт">
   <canvas id="beast"></canvas>
@@ -330,14 +386,16 @@ function sched(){
   const spb = 60 / 108 / 4;
   while(nextT < ctx.currentTime + .15){ playStep(step, nextT); nextT += spb; step = (step + 1) % 64; }
 }
-$('#sound').addEventListener('click', e => {
+function setMusic(on){
   ac(); if(!music) buildMusicBus();
-  musicOn = !musicOn;
-  e.currentTarget.setAttribute('aria-pressed', musicOn);
-  $('#soundState').textContent = musicOn ? 'ВКЛ' : 'ВЫКЛ';
+  if(on === musicOn) return;
+  musicOn = on;
+  $('#sound').setAttribute('aria-pressed', musicOn);
+  $('#soundState').textContent = musicOn ? 'ЗВУК ВКЛ' : '🔊 ВКЛЮЧИ ЗВУК';
   if(musicOn){ nextT = ctx.currentTime + .05; step = 0; music.gain.setTargetAtTime(.55, ctx.currentTime, .1); timer = setInterval(sched, 40); }
   else { clearInterval(timer); music.gain.setTargetAtTime(0, ctx.currentTime, .08); }
-});
+}
+$('#sound').addEventListener('click', () => setMusic(!musicOn));
 
 function roar(){
   const c = ac(), t = c.currentTime, len = 1.8;
@@ -479,6 +537,7 @@ for(let i = 0; i < 36; i++){
 let scanning = false;
 $('#statusBtn').addEventListener('click', () => {
   if(scanning) return; scanning = true;
+  $('#statusBtn').classList.remove('nudge'); $('#pressHint').hidden = true;
   ac(); beep(1200, .05);
   screen.classList.add('scan'); $('#stampSlot').innerHTML = '';
   const st = $('#status'); st.className = 'status'; st.textContent = 'СКАНИРОВАНИЕ СИГНАЛА…';
@@ -494,6 +553,42 @@ $('#statusBtn').addEventListener('click', () => {
     jingle(); scanning = false;
   }, 1200);
 });
+
+/* ---------- Intro transmission ---------- */
+(() => {
+  const intro = $('#intro'), term = $('#term'), actions = $('#introActions');
+  const lines = ['> ВХОДЯЩАЯ ПЕРЕДАЧА…','> ИСТОЧНИК: НЕ УСТАНОВЛЕН','> ЧАСТОТА: 83.7 МГц','> АДРЕСАТЫ: ВИКА, НАСТЯ','> СТАТУС: СРОЧНО'];
+  const full = lines.join('\n');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.body.style.overflow = 'hidden';
+  const done = () => { term.textContent = full; actions.classList.add('show'); $('#accept').focus(); };
+  if(reduce) done();
+  else { let i = 0; const t = setInterval(() => { term.textContent = full.slice(0, ++i); if(i >= full.length){ clearInterval(t); done(); } }, 38);
+    intro.addEventListener('click', e => { if(!actions.classList.contains('show')){ clearInterval(t); done(); } }); }
+  const close = withSound => {
+    if(withSound){ setMusic(true); jingle(); }
+    intro.hidden = true; document.body.style.overflow = '';
+    $('#sound').focus({preventScroll: true});
+  };
+  $('#accept').addEventListener('click', e => { e.stopPropagation(); close(true); });
+  $('#acceptMute').addEventListener('click', e => { e.stopPropagation(); close(false); });
+})();
+
+/* ---------- Countdown ---------- */
+(() => {
+  const target = new Date('2026-10-31T18:00:00+03:00').getTime();
+  const pad = n => String(n).padStart(2, '0');
+  const tick = () => {
+    let d = Math.max(0, target - Date.now());
+    if(d === 0){ $('#cdLabel').textContent = 'Врата открыты. Агенты, на позиции!'; }
+    const s = Math.floor(d / 1000);
+    $('#cdD').textContent = pad(Math.floor(s / 86400));
+    $('#cdH').textContent = pad(Math.floor(s % 86400 / 3600));
+    $('#cdM').textContent = pad(Math.floor(s % 3600 / 60));
+    $('#cdS').textContent = pad(s % 60);
+  };
+  tick(); setInterval(tick, 1000);
+})();
 
 /* ---------- Copy address ---------- */
 $('#copy').addEventListener('click', () => {

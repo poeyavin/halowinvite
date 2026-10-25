@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<title>Частота 83.7</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Courier+Prime:wght@400;700&family=Montserrat:wght@400;600;800&display=swap">
+<style>
+/* Layout: one CRT "broadcast" column; each block is a lab instrument panel stacked like intercepted transmissions */
+:root{
+  --void:#05070e; --void-2:#070913; --panel:#0b0f1d; --line:#1b2238;
+  --red:#ff0033; --red-2:#ff1e43; --cyan:#00f0ff; --amber:#ffea00; --green:#39ff88;
+  --ink:#cfd5e6; --muted:#7e869e; --paper:#ddd3b6; --paper-ink:#1d1a14;
+  --f-pixel:"Press Start 2P", ui-monospace, monospace;
+  --f-type:"Courier Prime", "Courier New", Courier, monospace;
+  --f-body:"Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--void)}
+body{background:var(--void);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--void-2)}
+/* CRT scanlines + flicker */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:80;
+  background:repeating-linear-gradient(to bottom,rgba(255,255,255,.035) 0 1px,transparent 1px 3px),
+             radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%);
+  animation:vhs 4s steps(1) infinite}
+@keyframes vhs{0%,100%{opacity:1}47%{opacity:.85}48%{opacity:1}73%{opacity:.92}74%{opacity:1}}
+
+.wrap{max-width:960px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px;display:grid;gap:28px}
+
+/* Header */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(7,9,19,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.bar{max-width:960px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-family:var(--f-pixel);font-size:11px;letter-spacing:.06em;color:var(--ink);display:flex;align-items:center;gap:10px;min-width:0}
+.logo b{color:var(--cyan);font-weight:400}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 1.2s ease-in-out infinite;flex:none}
+@keyframes pulse{50%{opacity:.25;box-shadow:0 0 2px var(--red)}}
+.sound{font-family:var(--f-pixel);font-size:9px;letter-spacing:.08em;color:var(--muted);background:transparent;border:1px solid var(--line);padding:9px 12px;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.sound .led{width:8px;height:8px;background:var(--muted)}
+.sound[aria-pressed="true"]{color:var(--cyan);border-color:var(--cyan);box-shadow:0 0 12px rgba(0,240,255,.25)}
+.sound[aria-pressed="true"] .led{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+button{font:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+.label{font-family:var(--f-pixel);font-size:10px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.panel{background:var(--panel);border:1px solid var(--line);padding:24px;position:relative}
+.panel h2{font-family:var(--f-pixel);font-size:clamp(13px,2.4vw,17px);line-height:1.6;margin:6px 0 14px;color:var(--ink);font-weight:400;text-wrap:balance}
+.type{font-family:var(--f-type)}
+
+/* Hero */
+.hero{padding-block:48px 8px;display:grid;gap:18px}
+.hero .label{color:var(--cyan)}
+h1{font-family:var(--f-pixel);font-weight:400;font-size:clamp(20px,5.2vw,44px);line-height:1.45;margin:0;color:var(--red-2);text-wrap:balance;position:relative;
+  text-shadow:0 0 6px rgba(255,0,51,.9),0 0 22px rgba(255,0,51,.6),0 0 48px rgba(255,0,51,.35)}
+h1 .glitch{position:relative;display:inline-block}
+h1 .glitch::before,h1 .glitch::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none}
+h1 .glitch::before{color:var(--cyan);text-shadow:none;opacity:.55;animation:gl1 3.2s infinite steps(1)}
+h1 .glitch::after{color:var(--amber);text-shadow:none;opacity:.35;animation:gl2 3.2s infinite steps(1)}
+@keyframes gl1{0%,88%,100%{clip-path:inset(100% 0 0 0);transform:none}89%{clip-path:inset(20% 0 55% 0);transform:translate(-3px,0)}92%{clip-path:inset(60% 0 10% 0);transform:translate(3px,0)}}
+@keyframes gl2{0%,90%,100%{clip-path:inset(100% 0 0 0);transform:none}91%{clip-path:inset(40% 0 40% 0);transform:translate(4px,0)}94%{clip-path:inset(5% 0 80% 0);transform:translate(-2px,0)}}
+.hero p{max-width:62ch;margin:0;color:var(--ink);font-family:var(--f-type);font-size:17px}
+.hero p em{font-style:normal;color:var(--cyan)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--f-type);color:var(--muted);font-size:14px}
+.meta span b{color:var(--amber);font-weight:700}
+
+/* Danger */
+.danger{border:0;padding:6px;background:repeating-linear-gradient(-45deg,var(--amber) 0 14px,#0a0a0a 14px 28px)}
+.danger-in{background:var(--void-2);padding:28px 20px;display:grid;justify-items:center;gap:16px;text-align:center}
+.danger-in .label{color:var(--amber)}
+.danger-in p{margin:0;font-family:var(--f-type);color:var(--muted);max-width:46ch}
+.big-red{font-family:var(--f-pixel);font-size:clamp(11px,2.6vw,15px);letter-spacing:.06em;color:#fff;background:radial-gradient(circle at 50% 35%,var(--red-2),#a3001f);border:3px solid #4a000e;border-radius:12px;padding:22px 26px;cursor:pointer;
+  box-shadow:0 6px 0 #4a000e,0 0 30px rgba(255,0,51,.5);animation:throb 1.4s ease-in-out infinite;max-width:100%}
+.big-red:active{transform:translateY(4px);box-shadow:0 2px 0 #4a000e,0 0 30px rgba(255,0,51,.5)}
+@keyframes throb{50%{box-shadow:0 6px 0 #4a000e,0 0 60px rgba(255,0,51,.85)}}
+
+/* Light wall */
+.wall{background:linear-gradient(180deg,#141018,#0d0a10);border:1px solid var(--line);padding:22px 12px 18px;display:grid;gap:22px}
+.row{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 4px;position:relative}
+.row::before{content:"";position:absolute;left:4%;right:4%;top:9px;height:2px;background:#2b2a22;border-radius:2px}
+.key{background:none;border:0;padding:0;width:clamp(30px,8.6vw,52px);display:grid;justify-items:center;gap:8px;cursor:pointer;color:var(--ink);position:relative}
+.bulb{width:14px;height:20px;border-radius:50% 50% 45% 45%;background:#3a3830;border-top:5px solid #222;transition:background .15s, box-shadow .15s}
+.key .ch{font-family:var(--f-body);font-weight:800;font-size:clamp(17px,4.2vw,28px);line-height:1;color:#e8e2d2;transform:rotate(var(--r,0deg))}
+.key.on .bulb{background:var(--c);box-shadow:0 0 8px var(--c),0 0 22px var(--c)}
+.wall.party .bulb{animation:party .5s steps(1) infinite;animation-delay:var(--d,0s)}
+@keyframes party{0%{background:var(--red);box-shadow:0 0 16px var(--red)}25%{background:var(--amber);box-shadow:0 0 16px var(--amber)}50%{background:var(--cyan);box-shadow:0 0 16px var(--cyan)}75%{background:var(--green);box-shadow:0 0 16px var(--green)}}
+.wall.wrong{animation:wrong .9s steps(2)}
+@keyframes wrong{0%,100%{box-shadow:none}50%{box-shadow:inset 0 0 80px rgba(255,0,51,.6)}}
+.console{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-top:16px}
+.code{font-family:var(--f-pixel);font-size:16px;letter-spacing:.4em;color:var(--amber);min-height:1.6em;text-shadow:0 0 10px rgba(255,234,0,.5)}
+.code:empty::before{content:"_ _ _";color:var(--muted);text-shadow:none}
+.btn{font-family:var(--f-pixel);font-size:10px;letter-spacing:.08em;background:transparent;color:var(--cyan);border:1px solid var(--cyan);padding:12px 14px;cursor:pointer}
+.btn:hover{background:rgba(0,240,255,.08)}
+.hint{font-family:var(--f-type);color:var(--muted);margin:0;font-size:15px}
+.reply{font-family:var(--f-type);font-size:16px;margin:12px 0 0;min-height:1.6em}
+.reply.ok{color:var(--green)} .reply.bad{color:var(--red-2)}
+
+/* Spectrometer */
+.spec{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:end}
+.screen{background:#020409;border:1px solid #13314a;height:150px;display:flex;align-items:flex-end;gap:3px;padding:10px;overflow:hidden;position:relative}
+.screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,240,255,.06) 0 1px,transparent 1px 25px)}
+.wb{flex:1;background:linear-gradient(to top,var(--cyan),rgba(0,240,255,.25));height:100%;transform-origin:bottom;transform:scaleY(.2);animation:eq var(--t) ease-in-out infinite alternate;animation-delay:var(--d)}
+.screen.scan .wb{animation-duration:.18s;background:linear-gradient(to top,var(--red),rgba(255,0,51,.25))}
+@keyframes eq{from{transform:scaleY(.08)}to{transform:scaleY(var(--h))}}
+.readout{display:grid;gap:10px;justify-items:start}
+.freq{font-family:var(--f-pixel);font-size:22px;color:var(--cyan);text-shadow:0 0 12px rgba(0,240,255,.6);font-variant-numeric:tabular-nums}
+.freq small{font-size:10px;color:var(--muted);text-shadow:none}
+.status{font-family:var(--f-type);font-size:16px;margin:14px 0 0;color:var(--muted);min-height:1.6em}
+.status.ok{color:var(--green)}
+.stamp{display:inline-grid;gap:4px;justify-items:center;margin-top:14px;padding:12px 18px;border:3px double var(--green);color:var(--green);font-family:var(--f-pixel);font-size:11px;letter-spacing:.1em;transform:rotate(-6deg);text-align:center;text-shadow:0 0 8px rgba(57,255,136,.5);animation:stamp .35s cubic-bezier(.2,1.6,.4,1)}
+.stamp small{font-family:var(--f-type);font-size:12px;letter-spacing:.04em}
+@keyframes stamp{from{transform:rotate(-6deg) scale(2.4);opacity:0}}
+
+/* Program */
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.timeline li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:16px;padding:14px 0;border-top:1px dashed var(--line)}
+.timeline li:first-child{border-top:0}
+.timeline time{font-family:var(--f-pixel);font-size:12px;color:var(--amber);padding-top:4px;font-variant-numeric:tabular-nums}
+.timeline b{display:block;font-weight:800;color:var(--ink)}
+.timeline span{color:var(--muted);font-size:15px}
+
+/* Dossiers */
+.files{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.file{background:var(--paper);color:var(--paper-ink);font-family:var(--f-type);padding:22px 20px 20px;position:relative;box-shadow:0 10px 30px rgba(0,0,0,.5);display:grid;gap:10px;align-content:start}
+.file::before{content:"";position:absolute;top:-14px;left:18px;width:120px;height:14px;background:var(--paper);clip-path:polygon(8% 0,92% 0,100% 100%,0 100%)}
+.file header{all:unset;display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:2px solid var(--paper-ink);padding-bottom:8px}
+.file h3{margin:0;font-size:20px;letter-spacing:.04em}
+.file .no{font-weight:700}
+.file dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:15px}
+.file dt{text-transform:uppercase;font-size:12px;letter-spacing:.08em;padding-top:2px;opacity:.7}
+.file dd{margin:0}
+.secret{position:absolute;right:14px;bottom:16px;border:3px solid #b3001f;color:#b3001f;font-weight:700;font-size:13px;letter-spacing:.12em;padding:4px 8px;transform:rotate(-10deg);opacity:.75}
+.redact{background:var(--paper-ink);color:var(--paper-ink);padding:0 4px;cursor:pointer;transition:color .2s, background .2s}
+.redact:hover,.redact:focus{background:transparent;color:var(--paper-ink)}
+
+/* Location */
+.where{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px}
+.big{font-family:var(--f-pixel);font-size:clamp(15px,3.4vw,22px);color:var(--amber);line-height:1.5;margin:8px 0 0;text-shadow:0 0 10px rgba(255,234,0,.35)}
+.big.red{color:var(--red-2);text-shadow:0 0 10px rgba(255,0,51,.5)}
+.copyrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.copied{font-family:var(--f-type);color:var(--green);font-size:14px}
+
+footer{text-align:center;font-family:var(--f-pixel);font-size:10px;letter-spacing:.14em;color:var(--muted);line-height:2}
+footer b{color:var(--red-2);font-weight:400}
+
+/* Screamer */
+.portal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:rgba(5,0,2,.82);backdrop-filter:blur(6px);
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.portal canvas{position:absolute;inset:0;width:100%;height:100%}
+.portal.shake canvas,.portal.shake .portal-in{animation:shake .5s cubic-bezier(.36,.07,.19,.97) 3}
+@keyframes shake{10%,90%{transform:translate(-2px,1px)}20%,80%{transform:translate(5px,-3px)}30%,50%,70%{transform:translate(-9px,4px)}40%,60%{transform:translate(9px,-4px)}}
+.portal-in{position:relative;display:grid;gap:18px;justify-items:center;text-align:center;margin-top:auto}
+.portal-in p{font-family:var(--f-pixel);font-size:clamp(14px,3.6vw,24px);color:var(--red-2);margin:0;line-height:1.5;text-shadow:0 0 14px var(--red),0 0 40px var(--red)}
+.portal-in .btn{color:#fff;border-color:var(--red-2);background:rgba(255,0,51,.18)}
+
+@media (max-width:560px){
+  .spec{grid-template-columns:1fr}
+  .logo{font-size:9px}
+  .sound .txt{display:none}
+  .panel{padding:20px 16px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .wb{transform:scaleY(calc(var(--h) * .6))}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="bar">
+    <div class="logo"><span class="dot" aria-hidden="true"></span><span>HAWKINS_LAB <b>//</b> FREQ_83.7</span></div>
+    <button class="sound" id="sound" aria-pressed="false"><span class="led" aria-hidden="true"></span><span class="txt">ЗВУК:</span> <span id="soundState">ВЫКЛ</span></button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="label">Перехвачено · 83.7 МГц · уровень допуска 4</div>
+    <h1><span class="glitch" data-text="ПОСЛАНИЕ ДЛЯ ВИКИ И НАСТИ">ПОСЛАНИЕ ДЛЯ ВИКИ И НАСТИ</span></h1>
+    <p>Лаборатория Хоукинса потеряла контроль над частотой. На волне <em>83.7</em> пойман сигнал, адресованный двум агентам. Расшифровка ниже. Если вы это читаете, вас уже ждут.</p>
+    <div class="meta"><span>ДАТА: <b>31.10, суббота</b></span><span>ТОЧКА СБОРА: <b>ул. Харьковская</b></span></div>
+  </section>
+
+  <section class="danger" aria-labelledby="dz">
+    <div class="danger-in">
+      <div class="label" id="dz">⚠ Зона повышенной опасности · сектор Изнанки</div>
+      <p>Стена между мирами здесь тоньше всего. Сотрудникам лаборатории запрещено трогать эту кнопку.</p>
+      <button class="big-red" id="trigger">🚨 НЕ НАЖИМАТЬ! 🚨</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="wallTitle">
+    <div class="label">Канал связи · гирлянда</div>
+    <h2 id="wallTitle">Стена Джойс</h2>
+    <p class="hint">Набери на лампочках кодовое слово из трёх букв. Подсказка: что нужно делать, когда стена вдруг начинает мигать?</p>
+    <div class="wall" id="wall" style="margin-top:16px"></div>
+    <div class="console">
+      <div class="code" id="code" aria-live="polite"></div>
+      <button class="btn" id="reset">↺ СБРОС</button>
+    </div>
+    <p class="reply" id="reply" aria-live="polite"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="specTitle">
+    <div class="label">Прибор 7-Б · радиоволновой спектрометр</div>
+    <h2 id="specTitle">Сигнал с Изнанки</h2>
+    <div class="spec">
+      <div class="screen" id="screen" aria-hidden="true"></div>
+      <div class="readout">
+        <div class="freq" id="freq">083.7 <small>МГц</small></div>
+        <button class="btn" id="statusBtn">▶ СТАТУС</button>
+      </div>
+    </div>
+    <p class="status" id="status" aria-live="polite">Ожидание запроса агента…</p>
+    <div id="stampSlot"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="progTitle">
+    <div class="label">Протокол операции</div>
+    <h2 id="progTitle">Программа вечера</h2>
+    <ol class="timeline">
+      <li><time>18:00</time><div><b>Сбор агентов</b><span>Пароль на входе вы уже знаете. Гирлянда покажет дорогу.</span></div></li>
+      <li><time>18:30</time><div><b>Брифинг и вкусняшки</b><span>Вафли, пицца, газировка. Еда в Изнанке не водится, так что наедаемся заранее.</span></div></li>
+      <li><time>19:30</time><div><b>Кинопоказ</b><span>Пледы, свет выключен, телефоны на беззвучном. Кто отвлекается, тот пропустит главное.</span></div></li>
+      <li><time>22:00</time><div><b>Чилл и разбор полётов</b><span>Обсуждаем теории, делимся гипотезами, решаем, кто был прав.</span></div></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="filesTitle" style="display:grid;gap:22px">
+    <div><div class="label">Архив · только для служебного пользования</div>
+      <h2 id="filesTitle" style="font-family:var(--f-pixel);font-weight:400;font-size:clamp(13px,2.4vw,17px);margin:6px 0 0">Секретные досье</h2></div>
+    <div class="files">
+      <article class="file">
+        <header><h3>АГЕНТ НАСТЯ</h3><span class="no">ДЕЛО №01</span></header>
+        <dl>
+          <dt>Роль</dt><dd>Главный штурман // Живой GPS</dd>
+          <dt>Специфика</dt><dd>Находит дорогу даже там, где карты молчат. Ни разу не потерялась, даже в другом измерении.</dd>
+          <dt>Оружие</dt><dd>Бумажная карта Хоукинса, 1983 г.</dd>
+          <dt>Миссия</dt><dd>Довести отряд до точки сбора <span class="redact" tabindex="0">без единого крюка</span>.</dd>
+        </dl>
+        <span class="secret">СОВ. СЕКРЕТНО</span>
+      </article>
+      <article class="file">
+        <header><h3>АГЕНТ ВИКА</h3><span class="no">ДЕЛО №011</span></header>
+        <dl>
+          <dt>Роль</dt><dd>Эксперт по уюту // Атмосфера</dd>
+          <dt>Специфика</dt><dd>Стратегический запас вафель Eggo. Превращает любую базу в место, откуда не хочется уходить.</dd>
+          <dt>Оружие</dt><dd>Гипотезы о сюжете, которые сбываются.</dd>
+          <dt>Миссия</dt><dd>Создать атмосферу и <span class="redact" tabindex="0">угадать финал раньше всех</span>.</dd>
+        </dl>
+        <span class="secret">СОВ. СЕКРЕТНО</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="whereTitle">
+    <div class="label">Координаты</div>
+    <h2 id="whereTitle">Место и время</h2>
+    <div class="where">
+      <div><div class="label">Точка сбора</div><p class="big" id="addr">ул. Харьковская</p>
+        <div class="copyrow"><button class="btn" id="copy">⧉ СКОПИРОВАТЬ</button><span class="copied" id="copied" aria-live="polite"></span></div></div>
+      <div><div class="label">Дата</div><p class="big red">31 ОКТЯБРЯ</p><p class="type" style="margin:8px 0 0;color:var(--muted)">суббота · сбор в 18:00</p></div>
+    </div>
+  </section>
+
+  <footer>КОНЕЦ ПЕРЕДАЧИ<br><b>■</b> ДРУЗЬЯ НЕ ВРУТ <b>■</b></footer>
+</main>
+
+<div class="portal" id="portal" hidden role="dialog" aria-modal="true" aria-label="Портал открыт">
+  <canvas id="beast"></canvas>
+  <div class="portal-in">
+    <p>ТЫ ОТКРЫЛ ВРАТА</p>
+    <button class="btn" id="close">✕ ЗАКРЫТЬ ПОРТАЛ</button>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+
+/* ---------- Audio (Web Audio only, no files) ---------- */
+let ctx, master, music, musicOn = false, timer, step = 0, nextT = 0;
+function ac(){
+  if(!ctx){
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain(); master.gain.value = .7; master.connect(ctx.destination);
+  }
+  if(ctx.state === 'suspended') ctx.resume();
+  return ctx;
+}
+const hz = m => 440 * 2 ** ((m - 69) / 12);
+function tone(freq, t, dur, type, vol, dest){
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + .01);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g).connect(dest || master); o.start(t); o.stop(t + dur + .05);
+}
+function beep(freq = 880, dur = .09){ ac(); tone(freq, ctx.currentTime, dur, 'square', .12); }
+
+// Original synthwave arpeggio: Am – F – Dm – E
+const chords = [[57,60,64,69],[53,57,60,65],[50,53,57,62],[52,56,59,64]];
+const pat = [0,1,2,3,2,1,2,3];
+function buildMusicBus(){
+  music = ctx.createGain(); music.gain.value = .55;
+  const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1700; lp.Q.value = 4;
+  const dl = ctx.createDelay(); dl.delayTime.value = .32;
+  const fb = ctx.createGain(); fb.gain.value = .3;
+  music.connect(lp); lp.connect(master); lp.connect(dl); dl.connect(fb); fb.connect(dl); dl.connect(master);
+}
+function playStep(s, t){
+  const ch = chords[Math.floor(s / 16) % 4];
+  tone(hz(ch[pat[s % 8]] + 12), t, .16, 'sawtooth', .06, music);
+  if(s % 8 === 0) tone(hz(ch[0] - 24), t, .5, 'triangle', .22, music);
+  if(s % 4 === 2) tone(hz(ch[0] - 12), t, .12, 'sawtooth', .05, music);
+}
+function sched(){
+  const spb = 60 / 108 / 4;
+  while(nextT < ctx.currentTime + .15){ playStep(step, nextT); nextT += spb; step = (step + 1) % 64; }
+}
+$('#sound').addEventListener('click', e => {
+  ac(); if(!music) buildMusicBus();
+  musicOn = !musicOn;
+  e.currentTarget.setAttribute('aria-pressed', musicOn);
+  $('#soundState').textContent = musicOn ? 'ВКЛ' : 'ВЫКЛ';
+  if(musicOn){ nextT = ctx.currentTime + .05; step = 0; music.gain.setTargetAtTime(.55, ctx.currentTime, .1); timer = setInterval(sched, 40); }
+  else { clearInterval(timer); music.gain.setTargetAtTime(0, ctx.currentTime, .08); }
+});
+
+function roar(){
+  const c = ac(), t = c.currentTime, len = 1.8;
+  const buf = c.createBuffer(1, c.sampleRate * len, c.sampleRate), d = buf.getChannelData(0);
+  for(let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const n = c.createBufferSource(); n.buffer = buf;
+  const bp = c.createBiquadFilter(); bp.type = 'bandpass'; bp.Q.value = 1.2;
+  bp.frequency.setValueAtTime(1100, t); bp.frequency.exponentialRampToValueAtTime(140, t + len);
+  const ws = c.createWaveShaper(), curve = new Float32Array(1024);
+  for(let i = 0; i < 1024; i++){ const x = i / 512 - 1; curve[i] = Math.tanh(x * 6); }
+  ws.curve = curve;
+  const g = c.createGain();
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(1, t + .06);
+  g.gain.setValueAtTime(1, t + .9); g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+  n.connect(bp).connect(g);
+  [68, 71.5, 103].forEach(f => {
+    const o = c.createOscillator(); o.type = 'sawtooth';
+    o.frequency.setValueAtTime(f * 1.6, t); o.frequency.exponentialRampToValueAtTime(f * .6, t + len);
+    const lfo = c.createOscillator(), lg = c.createGain(); lfo.frequency.value = 23; lg.gain.value = 14;
+    lfo.connect(lg).connect(o.frequency); lfo.start(t); lfo.stop(t + len);
+    o.connect(g); o.start(t); o.stop(t + len);
+  });
+  g.connect(ws).connect(master); n.start(t); n.stop(t + len);
+}
+function jingle(){
+  ac(); const t = ctx.currentTime;
+  [69,72,76,81,76,81,84].forEach((m, i) => tone(hz(m), t + i * .11, .2, 'square', .1));
+}
+
+/* ---------- Screamer ---------- */
+const portal = $('#portal'), cv = $('#beast'), g2 = cv.getContext('2d');
+let raf, t0, lastFocus;
+const eyes = Array.from({length: 7}, () => ({x: .15 + Math.random() * .7, y: .12 + Math.random() * .55, s: .6 + Math.random() * .9, b: Math.random() * 6}));
+const tendrils = Array.from({length: 16}, (_, i) => ({a: i / 16 * Math.PI * 2 + Math.random() * .3, w: 6 + Math.random() * 14, p: Math.random() * 6}));
+function draw(now){
+  const w = cv.width = innerWidth * devicePixelRatio, h = cv.height = innerHeight * devicePixelRatio, t = (now - t0) / 1000;
+  const cx = w / 2, cy = h * .42, R = Math.max(w, h);
+  const pulse = .5 + .5 * Math.sin(t * 7);
+  const rg = g2.createRadialGradient(cx, cy, 0, cx, cy, R * .6);
+  rg.addColorStop(0, `rgba(255,${30 + pulse * 40},60,.95)`); rg.addColorStop(.25, 'rgba(140,0,25,.85)'); rg.addColorStop(1, 'rgba(5,0,2,.2)');
+  g2.fillStyle = rg; g2.fillRect(0, 0, w, h);
+  g2.lineCap = 'round';
+  tendrils.forEach(td => {
+    const ex = cx + Math.cos(td.a) * R, ey = cy + Math.sin(td.a) * R;
+    const reach = .12 + .06 * Math.sin(t * 2 + td.p);
+    const tx = cx + Math.cos(td.a) * R * reach, ty = cy + Math.sin(td.a) * R * reach;
+    const nx = -Math.sin(td.a), ny = Math.cos(td.a), wig = Math.sin(t * 3 + td.p) * 60 * devicePixelRatio;
+    g2.strokeStyle = '#0a0004'; g2.shadowColor = 'rgba(255,0,51,.8)'; g2.shadowBlur = 18;
+    g2.lineWidth = td.w * devicePixelRatio;
+    g2.beginPath(); g2.moveTo(ex, ey);
+    g2.bezierCurveTo((ex + tx) / 2 + nx * wig, (ey + ty) / 2 + ny * wig, tx - nx * wig, ty - ny * wig, tx, ty);
+    g2.stroke();
+  });
+  g2.shadowBlur = 0;
+  eyes.forEach(e => {
+    const open = Math.sin(t * 1.3 + e.b) > -.85 ? 1 : .08;
+    const ex = e.x * w, ey = e.y * h, s = 16 * e.s * devicePixelRatio;
+    [-1, 1].forEach(side => {
+      g2.save(); g2.translate(ex + side * s * 1.5, ey); g2.scale(1, open);
+      g2.fillStyle = '#ffe9a0'; g2.shadowColor = '#ffea00'; g2.shadowBlur = 30;
+      g2.beginPath(); g2.ellipse(0, 0, s, s * .45, side * .25, 0, Math.PI * 2); g2.fill();
+      g2.fillStyle = '#000'; g2.shadowBlur = 0;
+      g2.beginPath(); g2.ellipse(0, 0, s * .14, s * .42, 0, 0, Math.PI * 2); g2.fill();
+      g2.restore();
+    });
+  });
+  raf = requestAnimationFrame(draw);
+}
+function openPortal(){
+  lastFocus = document.activeElement;
+  roar();
+  portal.hidden = false; portal.classList.remove('shake'); void portal.offsetWidth; portal.classList.add('shake');
+  t0 = performance.now(); raf = requestAnimationFrame(draw);
+  $('#close').focus();
+}
+function closePortal(){
+  portal.hidden = true; cancelAnimationFrame(raf);
+  if(lastFocus) lastFocus.focus();
+}
+$('#trigger').addEventListener('click', openPortal);
+$('#close').addEventListener('click', closePortal);
+addEventListener('keydown', e => { if(e.key === 'Escape' && !portal.hidden) closePortal(); });
+
+/* ---------- Light wall ---------- */
+const SECRET = 'RUN';
+const colors = ['#ff0033','#00f0ff','#ffea00','#39ff88','#ff4fd8','#ff8a00'];
+const wall = $('#wall'); let typed = '', locked = false;
+['ABCDEFGH','IJKLMNOPQ','RSTUVWXYZ'].forEach((row, ri) => {
+  const r = document.createElement('div'); r.className = 'row';
+  [...row].forEach((ch, i) => {
+    const b = document.createElement('button');
+    b.className = 'key'; b.setAttribute('aria-label', 'Буква ' + ch);
+    b.style.setProperty('--r', (Math.random() * 14 - 7).toFixed(1) + 'deg');
+    b.style.setProperty('--d', ((ri * 9 + i) * -.07).toFixed(2) + 's');
+    b.innerHTML = '<span class="bulb"></span><span class="ch">' + ch + '</span>';
+    b.addEventListener('click', () => press(b, ch));
+    r.appendChild(b);
+  });
+  wall.appendChild(r);
+});
+function press(b, ch){
+  if(locked) return;
+  b.style.setProperty('--c', colors[Math.floor(Math.random() * colors.length)]);
+  b.classList.add('on');
+  beep(520 + (ch.charCodeAt(0) - 65) * 28);
+  typed += ch; $('#code').textContent = typed;
+  if(typed.length === SECRET.length){
+    locked = true;
+    if(typed === SECRET){
+      wall.classList.add('party'); jingle();
+      $('#reply').className = 'reply ok';
+      $('#reply').textContent = '> КОД ПРИНЯТ. Бегите на Харьковскую 31 октября. Опаздывать нельзя.';
+    } else {
+      wall.classList.add('wrong'); beep(110, .5);
+      $('#reply').className = 'reply bad';
+      $('#reply').textContent = '> ПОМЕХИ. Сигнал не распознан, попробуй ещё раз.';
+      setTimeout(reset, 1100);
+    }
+  }
+}
+function reset(){
+  typed = ''; locked = false; $('#code').textContent = '';
+  wall.classList.remove('party','wrong');
+  wall.querySelectorAll('.key').forEach(k => k.classList.remove('on'));
+  if(!$('#reply').classList.contains('bad')) $('#reply').textContent = '';
+  else setTimeout(() => { $('#reply').textContent = ''; $('#reply').className = 'reply'; }, 1500);
+}
+$('#reset').addEventListener('click', () => { $('#reply').className = 'reply'; reset(); beep(300); });
+
+/* ---------- Spectrometer ---------- */
+const screen = $('#screen');
+for(let i = 0; i < 36; i++){
+  const b = document.createElement('div'); b.className = 'wb';
+  b.style.setProperty('--h', (.25 + Math.random() * .75).toFixed(2));
+  b.style.setProperty('--t', (.4 + Math.random() * .9).toFixed(2) + 's');
+  b.style.setProperty('--d', (-Math.random()).toFixed(2) + 's');
+  screen.appendChild(b);
+}
+let scanning = false;
+$('#statusBtn').addEventListener('click', () => {
+  if(scanning) return; scanning = true;
+  ac(); beep(1200, .05);
+  screen.classList.add('scan'); $('#stampSlot').innerHTML = '';
+  const st = $('#status'); st.className = 'status'; st.textContent = 'СКАНИРОВАНИЕ СИГНАЛА…';
+  const f = $('#freq'), jitter = setInterval(() => {
+    f.innerHTML = (80 + Math.random() * 8).toFixed(1).padStart(5, '0') + ' <small>МГц</small>';
+    tone(600 + Math.random() * 1200, ctx.currentTime, .03, 'square', .04);
+  }, 70);
+  setTimeout(() => {
+    clearInterval(jitter); f.innerHTML = '083.7 <small>МГц</small>';
+    screen.classList.remove('scan');
+    st.className = 'status ok'; st.textContent = 'СИГНАЛ ПРИНЯТ: АГЕНТ В СТРОЮ!';
+    $('#stampSlot').innerHTML = '<div class="stamp">ДОПУСК ПОЛУЧЕН<small>вход 31.10 · Харьковская</small></div>';
+    jingle(); scanning = false;
+  }, 1200);
+});
+
+/* ---------- Copy address ---------- */
+$('#copy').addEventListener('click', () => {
+  const text = $('#addr').textContent, out = $('#copied');
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#addr')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); out.textContent = 'Выделено, скопируй вручную'; };
+  try { navigator.clipboard.writeText(text).then(() => { out.textContent = 'Адрес скопирован'; }, fallback); }
+  catch(e){ fallback(); }
+});
+</script>
+</body>
+</html>
